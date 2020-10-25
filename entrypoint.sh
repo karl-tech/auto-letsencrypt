@@ -7,22 +7,12 @@ if [ -z "$DOMAINS" ] ; then
   exit 1
 fi
 
-if [ -z "$EMAIL" ] ; then
-  echo "No email set, please fill -e 'EMAIL=your@email.tld'"
-  exit 1
-fi
-
 DOMAINS=(${DOMAINS})
 CERTBOT_DOMAINS=("${DOMAINS[*]/#/--domain }")
 CHECK_FREQ="${CHECK_FREQ:-30}"
-WEBROOT_PATH="${WEBROOT_PATH:-"/var/www"}"
 
 check() {
-  echo "* Starting webroot initial certificate request script..."
-
-  certbot certonly --webroot --agree-tos --noninteractive --text --expand \
-      --email ${EMAIL} \
-      --webroot-path ${WEBROOT_PATH} \
+  certbot certonly --standalone --non-interactive --agree-tos --register-unsafely-without-email \
       ${CERTBOT_DOMAINS}
 
   echo "* Certificate request process finished for domain $DOMAINS"

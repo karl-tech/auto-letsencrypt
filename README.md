@@ -30,7 +30,6 @@ Run this image:
 ```
 docker run -d
   -e 'DOMAINS=example.com www.example.com' \
-  -e EMAIL=elliot@allsafe.com \
   -v /etc/letsencrypt:/etc/letsencrypt \
   -v /var/lib/letsencrypt:/var/lib/letsencrypt \
   -v /tmp/letsencrypt:/var/www \
@@ -47,9 +46,6 @@ To automatically reload the server configuration to use the new certificates, pr
 ##### Copy certificates to another directory
 Provide a directory path to the `CERTS_PATH` environment variable if you wish to copy the certificates to another directory. You may wish to do this in order to avoid exposing the entire `/etc/letsencrypt/` directory to your web server container.
 
-##### Customize webroot path
-To configure the webroot path use the `WEBROOT_PATH` environment variable. The default is `/var/www`.
-
 ##### Change the check frequency
 Provide a number to the `CHECK_FREQ` environment variable to adjust how often it attempts to renew a certificate. The default is 30 days. Please note `certbot` is configured to keep matching certificates until one is due for renewal.
 
@@ -62,7 +58,6 @@ docker run -d
   -e NGINX_CONTAINER=nginx \
   -e SERVER_CONTAINER=nginx \
   -e CERTS_PATH=/etc/nginx/certs \
-  -e WEBROOT_PATH=/var/www \
   -e CHECK_FREQ=7 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc/letsencrypt:/etc/letsencrypt \
@@ -106,7 +101,6 @@ services:
     environment:
       - EMAIL=elliot@allsafe.com
       - SERVER_CONTAINER=server
-      - WEBROOT_PATH=/tmp/letsencrypt/www
       - CERTS_PATH=/etc/nginx/certs
       - DOMAINS=e-corp-usa.com www.e-corp-usa.com
       - CHECK_FREQ=7
@@ -120,7 +114,6 @@ services:
 
 * **DOMAINS**: Domains for your certificate. e.g. `example.com www.example.com`.
 * **EMAIL**: Email for urgent notices and lost key recovery. e.g. `your@email.tld`.
-* **WEBROOT_PATH** Path to the letsencrypt directory in the web server for checks. Defaults to `/var/www`.
 * **CERTS_PATH**: Optional. Copy the new certificates to the specified path. e.g. `/etc/nginx/certs`.
 * **SERVER_CONTAINER**: Optional. The Docker container name of the server you wish to send a `HUP` signal to in order to reload its configuration and use the new certificates.
 * **SERVER_CONTAINER_LABEL**: Optional. The Docker container label of the server you wish to send a `HUP` signal to in order to reload its configuration and use the new certificates. This environment variable will be helpfull in case of deploying with docker swarm since docker swarm will create container name itself.
