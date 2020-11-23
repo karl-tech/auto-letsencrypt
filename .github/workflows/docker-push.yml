@@ -33,4 +33,4 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKER_HUB_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/v2fly:latest
+          tags: ${{ secrets.DOCKER_HUB_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/auto-letsencrypt:latest
